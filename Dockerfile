@@ -16,7 +16,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Use OpenJDK runtime image
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
