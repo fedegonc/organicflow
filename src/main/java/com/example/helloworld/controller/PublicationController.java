@@ -15,6 +15,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/api/publications")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PublicationController {
     private final CreatePublication createPublication;
     private final ListDrafts listDrafts;
