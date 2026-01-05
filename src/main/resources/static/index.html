@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publication System Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .publication {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .draft {
+            background: #f8f9fa;
+        }
+        .published {
+            background: #d4edda;
+        }
+        .archived {
+            background: #f8d7da;
+        }
+        .state {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .error {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Publication System Demo</h1>
+    
+    <h2>Create Publication</h2>
+    <form id="createForm">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" required>
+        </div>
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea id="content" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="authorId">Author ID:</label>
+            <input type="text" id="authorId" value="author1" required>
+        </div>
+        <button type="submit">Create Draft</button>
+    </form>
+    
+    <div id="error" class="error" style="display: none;"></div>
+    
+    <h2>Publications</h2>
+    <div id="publications"></div>
+    
+    <script>
+        const API = 'http://localhost:8080/api/publications';
+        
+        async function createPublication(title, content, authorId) {
+            const response = await fetch(API, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, content, authorId })
+            });
+            if (!response.ok) throw new Error('Failed to create');
+            return response.json();
+        }
+        
+        async function publishPublication(id) {
+            const response = await fetch(`${API}/${id}/publish`, { method: 'POST' });
+            if (!response.ok) throw new Error('Cannot publish');
+            return response.json();
+        }
+        
+        async function archivePublication(id) {
+            const response = await fetch(`${API}/${id}/archive`, { method: 'POST' });
+            if (!response.ok) throw new Error('Cannot archive');
+            return response.json();
+        }
+        
+        async function loadPublications() {
+            const response = await fetch(`${API}/published`);
+            const publications = await response.json();
+            displayPublications(publications);
+        }
+        
+        function displayPublications(publications) {
+            const container = document.getElementById('publications');
+            container.innerHTML = publications.map(pub => `
+                <div class="publication ${pub.state.toLowerCase()}">
+                    <h3>${pub.title}</h3>
+                    <p>${pub.content}</p>
+                    <p>Author: ${pub.authorId} | State: <span class="state">${pub.state}</span></p>
+                    <p>Created: ${new Date(pub.createdAt).toLocaleString()}</p>
+                    ${pub.publishedAt ? `<p>Published: ${new Date(pub.publishedAt).toLocaleString()}</p>` : ''}
+                    <div>
+                        ${pub.state === 'DRAFT' ? `<button onclick="handlePublish('${pub.id}')">Publish</button>` : ''}
+                        ${pub.state === 'PUBLISHED' ? `<button onclick="handleArchive('${pub.id}')">Archive</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        async function handlePublish(id) {
+            try {
+                await publishPublication(id);
+                loadPublications();
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+        
+        async function handleArchive(id) {
+            try {
+                await archivePublication(id);
+                loadPublications();
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => errorDiv.style.display = 'none', 3000);
+        }
+        
+        document.getElementById('createForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const authorId = document.getElementById('authorId').value;
+            
+            try {
+                await createPublication(title, content, authorId);
+                e.target.reset();
+                loadPublications();
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+        
+        loadPublications();
+    </script>
+</body>
+</html>
