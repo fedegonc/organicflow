@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Tab Navigation -->
+<div th:fragment="tabNav(tabs, activeTab)" class="tabs">
+    <button th:each="tab : ${tabs}"
+            th:text="${tab.name}"
+            th:class="${tab.id == activeTab} ? 'tab active' : 'tab'"
+            th:onclick="|showTab('${tab.id}')|"
+            class="tab">Tab</button>
+</div>
+
+<!-- Tab Content -->
+<div th:fragment="tabContent(activeTab)" class="tab-content">
+    <th:block th:replace="${activeTab}"></th:block>
+</div>
+
+</html>

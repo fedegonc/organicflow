@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Primary Button -->
+<button th:fragment="primary(text, onclick)" 
+        th:text="${text}"
+        th:onclick="${onclick}"
+        class="btn-primary">Button</button>
+
+<!-- Success Button -->
+<button th:fragment="success(text, onclick)" 
+        th:text="${text}"
+        th:onclick="${onclick}"
+        class="btn-success">Button</button>
+
+<!-- Danger Button -->
+<button th:fragment="danger(text, onclick)" 
+        th:text="${text}"
+        th:onclick="${onclick}"
+        class="btn-danger">Button</button>
+
+<!-- Secondary Button -->
+<button th:fragment="secondary(text, onclick)" 
+        th:text="${text}"
+        th:onclick="${onclick}"
+        class="btn-secondary">Button</button>
+
+</html>

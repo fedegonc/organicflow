@@ -13,10 +13,10 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>hello-world-spring-h2</artifactId>
+    <artifactId>publication-system</artifactId>
     <version>1.0.0</version>
-    <name>hello-world-spring-h2</name>
-    <description>Hello World with Spring Boot, H2 and Docker</description>
+    <name>publication-system</name>
+    <description>Governed Publication System with Spring Boot and Docker</description>
 
     <properties>
         <java.version>17</java.version>
@@ -43,6 +43,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+        <groupId>nz.net.ultraq.thymeleaf</groupId>
+         <artifactId>thymeleaf-layout-dialect</artifactId>
         </dependency>
         
         <dependency>

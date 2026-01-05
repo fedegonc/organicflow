@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="publicationCard(publication, showActions)" class="publication" 
+     th:classappend="${publication.state.name()} == 'DRAFT' ? 'draft' : 
+                     (${publication.state.name()} == 'PUBLISHED' ? 'published' : 'archived')">
+    <h3 th:text="${publication.title}">Title</h3>
+    <p th:text="${publication.content}">Content</p>
+    <div class="meta">
+        Author: <span th:text="${publication.authorId}">Author</span> | 
+        <span class="state" th:text="${publication.state}">DRAFT</span> | 
+        Created: <span th:text="${#temporals.format(publication.createdAt, 'yyyy-MM-dd HH:mm')}">Date</span>
+        <span th:if="${publication.publishedAt}">
+            <br>Published: <span th:text="${#temporals.format(publication.publishedAt, 'yyyy-MM-dd HH:mm')}">Date</span>
+        </span>
+    </div>
+    <div class="actions" th:if="${showActions}">
+        <!-- Actions will be added by the calling template -->
+        <th:block th:replace="${actions}"></th:block>
+    </div>
+</div>
+</html>

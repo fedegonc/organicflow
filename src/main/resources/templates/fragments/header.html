@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Publication System</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body th:fragment="header(showAuth)">
+    <header class="header">
+        <div class="logo">Publication System</div>
+        <div class="nav-buttons" th:if="${showAuth}">
+            <button id="authButton" onclick="toggleAuth()">Enter</button>
+        </div>
+    </header>
+</body>
+</html>

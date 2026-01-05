@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="~{fragments/header :: head(${title})}"></head>
+<body>
+    <header th:replace="~{fragments/header :: header(true)}"></header>
+    
+    <main class="container">
+        <div layout:fragment="content">
+            <!-- Page content goes here -->
+        </div>
+    </main>
+    
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+    
+    <!-- Default scripts -->
+    <script src="/js/main.js"></script>
+    
+    <!-- Page-specific scripts slot -->
+    <th:block layout:fragment="scripts"></th:block>
+</body>
+</html>

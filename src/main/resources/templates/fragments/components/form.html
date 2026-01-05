@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Input Field -->
+<div th:fragment="input(label, name, value, type)" class="form-group">
+    <label th:for="${name}" th:text="${label}">Label</label>
+    <input th:type="${type ?: 'text'}"
+           th:id="${name}"
+           th:name="${name}"
+           th:value="${value}"
+           class="form-control">
+</div>
+
+<!-- Textarea Field -->
+<div th:fragment="textarea(label, name, value)" class="form-group">
+    <label th:for="${name}" th:text="${label}">Label</label>
+    <textarea th:id="${name}"
+              th:name="${name}"
+              rows="6"
+              class="form-control"
+              th:text="${value}">Content</textarea>
+</div>
+
+<!-- Form -->
+<form th:fragment="form(action, method)" 
+      th:action="${action}"
+      th:method="${method ?: 'POST'}"
+      class="form">
+    <th:block th:replace="${content}"></th:block>
+</form>
+
+</html>

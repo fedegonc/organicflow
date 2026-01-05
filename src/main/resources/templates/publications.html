@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+      
+<head>
+    <title>Publications</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <h1>Published Publications</h1>
+        
+        <div th:if="${publications.empty}" class="empty-state">
+            <h2>No publications yet</h2>
+            <p>Be the first to publish something!</p>
+        </div>
+        
+        <div th:each="publication : ${publications}">
+            <div th:replace="~{fragments/components/card :: publicationCard(${publication}, false)}"></div>
+        </div>
+    </div>
+</body>
+</html>
