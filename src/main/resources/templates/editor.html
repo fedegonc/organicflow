@@ -56,9 +56,13 @@
     
     <th:block layout:fragment="scripts">
         <script>
-            const API = '/api/publications';
+            // Get base URL dynamically
+            const API = window.location.origin + '/api/publications';
+            console.log('API Base URL:', API);
+            console.log('Current origin:', window.location.origin);
             
             function showTab(tabName) {
+                console.log('Switching to tab:', tabName);
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('[id$="-tab"]').forEach(t => t.classList.add('hidden'));
                 
@@ -70,15 +74,65 @@
             }
             
             async function loadDrafts() {
-                const response = await fetch(`${API}/drafts`);
-                const drafts = await response.json();
-                displayDrafts(drafts);
+                const url = `${API}/drafts`;
+                console.log('Loading drafts from:', url);
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+                    
+                    console.log('Drafts response status:', response.status);
+                    console.log('Drafts response headers:', [...response.headers.entries()]);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const drafts = await response.json();
+                    console.log('Drafts loaded:', drafts);
+                    displayDrafts(drafts);
+                } catch (error) {
+                    console.error('Error loading drafts:', error);
+                    console.error('Error stack:', error.stack);
+                    showError(`Failed to load drafts: ${error.message}`);
+                }
             }
             
             async function loadPublished() {
-                const response = await fetch(`${API}/published`);
-                const publications = await response.json();
-                displayPublished(publications);
+                const url = `${API}/published`;
+                console.log('Loading published from:', url);
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin'
+                    });
+                    
+                    console.log('Published response status:', response.status);
+                    console.log('Published response headers:', [...response.headers.entries()]);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const publications = await response.json();
+                    console.log('Published loaded:', publications);
+                    displayPublished(publications);
+                } catch (error) {
+                    console.error('Error loading published:', error);
+                    console.error('Error stack:', error.stack);
+                    showError(`Failed to load published: ${error.message}`);
+                }
             }
             
             function displayDrafts(publications) {
@@ -121,32 +175,50 @@
             }
             
             async function handlePublish(id) {
+                const url = `/api/publications/${id}/publish`;
+                console.log('Publishing publication:', id);
+                console.log('Publish URL:', url);
+                
                 try {
-                    const response = await fetch(`/api/publications/${id}/publish`, { 
+                    const response = await fetch(url, { 
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
-                        }
+                        },
+                        credentials: 'same-origin'
                     });
+                    
+                    console.log('Publish response status:', response.status);
+                    console.log('Publish response headers:', [...response.headers.entries()]);
+                    
                     if (response.ok) {
+                        console.log('Publication published successfully');
                         window.location.reload();
                     } else {
                         const error = await response.text();
+                        console.error('Publish error response:', error);
                         showError(error);
                     }
                 } catch (error) {
+                    console.error('Error publishing:', error);
+                    console.error('Error stack:', error.stack);
                     showError('Failed to publish: ' + error.message);
                 }
             }
             
             function showError(message) {
+                console.error('Showing error message:', message);
                 const errorDiv = document.createElement('div');
                 errorDiv.className = 'error';
                 errorDiv.textContent = message;
                 errorDiv.style.display = 'block';
                 document.querySelector('.tab-content').prepend(errorDiv);
-                setTimeout(() => errorDiv.remove(), 3000);
+                setTimeout(() => errorDiv.remove(), 5000);
             }
+            
+            // Log page load
+            console.log('Page loaded successfully');
+            console.log('Document ready state:', document.readyState);
         </script>
     </th:block>
 </body>
