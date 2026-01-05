@@ -21,7 +21,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Copy the jar file from build stage
-COPY --from=build /app/target/hello-world-spring-h2-1.0.0.jar app.jar
+COPY --from=build /app/target/publication-system-1.0.0.jar app.jar
 
 # Expose port 8080
 EXPOSE 8080
