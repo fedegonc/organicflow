@@ -14,10 +14,15 @@
         <div th:if="${publications.empty}" class="empty-state">
             <h2>No publications yet</h2>
             <p>Be the first to publish something!</p>
+            <div th:replace="~{fragments/components/button :: primary('Start Writing', 'window.location.href=\"/editor\"')}"></div>
         </div>
         
         <div th:each="publication : ${publications}">
             <div th:replace="~{fragments/components/card :: publicationCard(${publication}, false)}"></div>
+        </div>
+        
+        <div style="margin-top: 40px; text-align: center;">
+            <div th:replace="~{fragments/components/button :: secondary('Go to Editor', 'window.location.href=\"/editor\"')}"></div>
         </div>
     </div>
 </body>

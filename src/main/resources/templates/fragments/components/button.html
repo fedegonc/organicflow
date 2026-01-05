@@ -2,27 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <!-- Primary Button -->
-<button th:fragment="primary(text, onclick)" 
+<button th:fragment="primary(text, onclick, type)" 
         th:text="${text}"
         th:onclick="${onclick}"
+        th:type="${type ?: 'button'}"
         class="btn-primary">Button</button>
 
-<!-- Success Button -->
-<button th:fragment="success(text, onclick)" 
+<!-- Secondary Button -->
+<button th:fragment="secondary(text, onclick, type)" 
         th:text="${text}"
         th:onclick="${onclick}"
-        class="btn-success">Button</button>
+        th:type="${type ?: 'button'}"
+        class="btn-secondary">Button</button>
 
 <!-- Danger Button -->
-<button th:fragment="danger(text, onclick)" 
+<button th:fragment="danger(text, onclick, type)" 
         th:text="${text}"
         th:onclick="${onclick}"
+        th:type="${type ?: 'button'}"
         class="btn-danger">Button</button>
 
-<!-- Secondary Button -->
-<button th:fragment="secondary(text, onclick)" 
+<!-- Submit Button (Primary) -->
+<button th:fragment="submit(text)" 
         th:text="${text}"
-        th:onclick="${onclick}"
-        class="btn-secondary">Button</button>
+        type="submit"
+        class="btn-primary">Submit</button>
 
 </html>
